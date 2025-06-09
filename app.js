@@ -66,8 +66,15 @@ app.patch("/tasklist/:taskListId",(request,response)=>{
 })
 
 app.delete("/tasklist/:taskListId",(request,response)=>{
+    const deleteTaskInsideTaskList = (taskList)=>{
+        console.log(taskList)
+        taskModel.deleteMany({_ListId:taskList._id})
+        .then((list)=> { return list })
+        .catch((error)=>{console.log(error)})
+    }
     taskListModel.findByIdAndDelete(request.params.taskListId)
     .then((list)=>{
+        deleteTaskInsideTaskList(list)
         response.send(list);
     })
     .catch((error)=>{
